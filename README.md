@@ -28,22 +28,4 @@ npm run lint
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
-##### 目录结构：
-* assets
-	* img
-	* css
-* common
-* components
-	* common
-	* content
-* network
-* router
-* store
-* views
-	* home
-	* category
-	* cart
-	* profile
-* App.vue
-* main.js
 

@@ -140,6 +140,7 @@
 					this.goods[type].page += 1;
 					// pullingUp只会监听一次,如果还需要监听,需要finishPullUp()
 					this.$refs.scroll.finishPullUp();
+					// this.$refs.scroll.refresh();
 				})
 			}
 		}

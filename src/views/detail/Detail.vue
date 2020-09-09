@@ -3,7 +3,6 @@
 		<detail-nav-bar class="detail-nav-bar" @titleClick="titleClick"
 										ref="detailNavBar"></detail-nav-bar>
 		<scroll class="wrapper" ref="scroll" :probe-type="3" @scroll="detailScroll">
-			<div>{{$store.state.cartList.length}}</div>
 			<detail-swiper :top-images="topImages"></detail-swiper>
 			<detail-base-info :goods="goods"></detail-base-info>
 			<detail-shop-info :shop="shop"></detail-shop-info>
@@ -16,10 +15,13 @@
 		</scroll>
 		<detail-bottom-bar @addCart="addToCart"></detail-bottom-bar>
 		<back-top @click.native = "backClick" v-show="isShowBackTop" />
+		<!-- <toast :message="message" :show="show" /> -->
 	</div>
 </template>
 
 <script>
+	import Scroll from 'components/common/scroll/Scroll.vue'
+	
 	import DetailNavBar from './childComps/DetailNavBar.vue'
 	import DetailSwiper from './childComps/DetailSwiper.vue'
 	import DetailBaseInfo from './childComps/DetailBaseInfo.vue'
@@ -34,13 +36,14 @@
 	import {debounce} from 'common/utils.js'
 	import {itemListenerMixin, backTopMixin} from 'common/mixin.js'
 	
-	import Scroll from 'components/common/scroll/Scroll.vue'
+	// import { mapActions } from 'vuex'	// 将store中 actions 映射到当前组件
+	// import Toast from 'components/common/toast/Toast.vue'
 	
 	export default {
 		name: 'Detail',
 		components: {
-			DetailNavBar,
 			Scroll,
+			DetailNavBar,
 			DetailSwiper,
 			DetailBaseInfo,
 			DetailShopInfo,
@@ -48,7 +51,8 @@
 			DetailParamInfo,
 			DetailCommentInfo,
 			GoodsList,
-			DetailBottomBar
+			DetailBottomBar,
+			// Toast
 		},
 		mixins: [itemListenerMixin, backTopMixin],
 		data() {
@@ -61,7 +65,9 @@
 				paramInfo: {},
 				commentInfo: {},
 				recommends: [],
-				themeTopYs: []
+				themeTopYs: [],
+				// message: '',
+				// show: false
 			}
 		},
 		created() {
@@ -100,6 +106,9 @@
 			this.$bus.$off('itemImageLoad', this.itemImgListener)
 		},
 		methods: {
+			// 将actions内addCart方法映射到当前组件
+			// ...mapActions(['addCart']),
+			
 			// 因为在DetailGoodsInfo组件做了判断,只有所有图片加载完成才会发出imageLoad事件
 			// 所以在这里imageLoad()只会执行一次,无须进行防抖
 			imageLoad() {
@@ -138,7 +147,21 @@
 				product.iid = this.iid;
 				
 				// 2.将商品添加到购物车
-				this.$store.commit('addCart', product)
+				this.$store.dispatch('addCart', product).then(res => {
+					// this.show = 'true';
+					// this.message = res;
+					// setTimeout(() => {
+					// 	this.show = false;
+					// 	this.message = '';
+					// }, 1500)
+					this.$toast.show(res, 2000);
+					// console.log(this.$toast);
+				});
+				// 通过mapActions映射后,可直接调用actions内addCart方法
+				// this.addCart(product).then(res => {
+				// 	console.log(res);
+				// })
+				// this.$bus.$emit('addCartSuccess');
 			}
 		}
 	}

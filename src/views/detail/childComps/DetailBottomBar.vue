@@ -40,12 +40,11 @@
 	.bottom-bar {
 		position: fixed;
 		width: 100%;
-		bottom: 0;
 		height: 49px;
-		z-index: 99;
+		bottom: 0;
+		z-index: 999;
 		display: flex;
 		text-align: center;
-		/* border-top: 1px solid rgba(128, 128, 128, 0.2); */
 		background-color: #fff;
 	}
 	.bottom_left {

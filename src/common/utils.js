@@ -42,3 +42,9 @@ export function formatDate(date, fmt) {
 function padLeftZero(str) {
   return ("00" + str).substr(str.length);
 }
+
+// JavaScript计算精度问题
+export function formatFloat (f, dight) {
+	var m = Math.pow(10, dight);
+	return parseInt(f*m, 10)/m
+}
